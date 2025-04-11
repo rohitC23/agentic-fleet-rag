@@ -1,25 +1,37 @@
 {
+  "name": "webhookChatbBotV2",
   "nodes": [
     {
       "parameters": {
-        "public": true,
-        "mode": "webhook",
-        "options": {}
+        "httpMethod": "POST",
+        "path": "7c584a73-0a69-45f4-8bca-c3066e5bec3a",
+        "responseMode": "lastNode",
+        "responseData": "allEntries",
+        "options": {
+          "allowedOrigins": "*",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "query"
+              }
+            ]
+          }
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
       "position": [
-        -1240,
-        2100
+        -4240,
+        3640
       ],
-      "id": "6a4addca-a1bb-4fcd-bfca-eeab53881443",
-      "name": "When chat message received",
-      "webhookId": "4c243c97-9bc3-4799-af8a-b85b14d4dd07"
+      "id": "c6541a7f-b6b4-4f60-b8a9-e9bf913b6f89",
+      "name": "Webhook",
+      "webhookId": "7c584a73-0a69-45f4-8bca-c3066e5bec3a"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $json.chatInput }}",
+        "text": "={{ $json.body.query }}",
         "options": {
           "systemPromptTemplate": "Use the following pieces of context to answer the users question. Make sure to add the relavant urls and their corresponding image urls if exists in the context. Make sure to provide complete urls. Always maintain consistency in output.\nIf you don't know the answer, just say that you don't know, don't try to make up an answer.\n----------------\n{context}"
         }
@@ -27,10 +39,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainRetrievalQa",
       "typeVersion": 1.4,
       "position": [
-        460,
-        2060
+        -2640,
+        3600
       ],
-      "id": "68ee743f-2746-4de4-ae87-31507e3e5fed",
+      "id": "a72da15d-d2bf-4b41-9fea-455d78fc74c7",
       "name": "Question and Answer Chain1"
     },
     {
@@ -38,10 +50,10 @@
       "type": "@n8n/n8n-nodes-langchain.retrieverVectorStore",
       "typeVersion": 1,
       "position": [
-        660,
-        2320
+        -2440,
+        3860
       ],
-      "id": "db90692a-ad04-4360-876c-237e5a53ab80",
+      "id": "7542a11e-9135-435c-a4bd-dc39c89efde2",
       "name": "Vector Store Retriever1"
     },
     {
@@ -56,13 +68,13 @@
           "queryName": "match_documents"
         }
       },
-      "id": "d4d9149d-8a52-40ce-bdb6-d89dafecc812",
+      "id": "8fbd6fe3-c614-42c7-af6f-35172b44d5a6",
       "name": "Supabase Vector Store",
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1,
       "position": [
-        840,
-        2460
+        -2260,
+        4000
       ],
       "credentials": {
         "supabaseApi": {
@@ -78,35 +90,15 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
       "typeVersion": 1,
       "position": [
-        540,
-        2500
+        -2560,
+        4040
       ],
-      "id": "0bafb413-d53a-4e74-8be4-b0633a849f5e",
+      "id": "3f8bfd3c-1379-4315-95b7-4f56a31c23ac",
       "name": "Embeddings Google Gemini3",
       "credentials": {
         "googlePalmApi": {
           "id": "kENcdhBh2a0j4yYG",
           "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": "llama-3.3-70b-versatile",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
-      "typeVersion": 1,
-      "position": [
-        420,
-        2280
-      ],
-      "id": "c4233397-a7e8-4a2e-9a39-ea0936fbac01",
-      "name": "Groq Chat Model",
-      "credentials": {
-        "groqApi": {
-          "id": "t5AtmQRC3l7epiEY",
-          "name": "Groq account"
         }
       }
     },
@@ -127,10 +119,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        820,
-        2080
+        -2280,
+        3620
       ],
-      "id": "51e1971f-ea71-4028-8538-033221b4b73f",
+      "id": "ca013d55-d2d1-46fb-a21b-b28c36039b69",
       "name": "Edit Fields1"
     },
     {
@@ -141,10 +133,10 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        1460,
-        2120
+        -1640,
+        3660
       ],
-      "id": "a522a474-259a-4350-a468-56ad8890a6c5",
+      "id": "84499978-1a24-4b28-adab-c6b40a2ee179",
       "name": "Split Out1"
     },
     {
@@ -154,18 +146,20 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1240,
-        2200
+        -1860,
+        3740
       ],
-      "id": "562cb090-3a22-4499-899c-1aa3f8ce1269",
+      "id": "1d79d16f-3d28-4e3a-85ba-4c3fe01719f7",
       "name": "Code1"
     },
     {
       "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.query }}",
         "messages": {
           "messageValues": [
             {
-              "message": "=You are a MongoDB query generator that converts natural language requests into MongoDB queries. Your responses should ONLY include the MongoDB query code, with no explanations or additional text.  Reference this database schema: {   \"_id\": \"object\",   \"quantity\": \"integer\",   \"service_load_duration\": \"integer\",   \"service_unload_duration\": \"integer\",   \"service_install_duration\": \"integer\",   \"service_uninstall_duration\": \"integer\",   \"service_delivery_duration\": \"integer\",   \"editable\": \"boolean\",   \"status\": \"string\" (UPPER CASE),   \"inspected_house\": \"boolean\",   \"service_load\": \"boolean\",   \"service_unload\": \"boolean\",   \"service_install\": \"boolean\",   \"service_uninstall\": \"boolean\",   \"custom_appt_required\": \"boolean\",   \"account_code\": \"string\",   \"customer_address_line\": \"string\",   \"customer_city\": \"string\",   \"customer_state\": \"string\",   \"customer_country\": \"string\",   \"customer_zipcode\": \"string\",   \"customer_order_number\": \"string\",   \"return_authorization\": \"string\",   \"billing_number\": \"string\",   \"item_name\": \"string\",   \"warehouse_code\": \"string\",   \"customer_first_name\": \"string\",   \"customer_last_name\": \"string\",   \"customer_phone_one\": \"string\",   \"customer_email\": \"string\",   \"type_of_order\": \"string\",   \"weight\": \"integer\",   \"is_hazardous\": \"boolean\",   \"reference_1\": \"string\",   \"reference_title_1\": \"string\",   \"created_at\": \"datetime\",   \"updated_at\": \"datetime\",   \"organization_id\": \"object\",   \"cs_location_id\": \"string\",   \"wh_location_id\": \"string\",   \"stnNum\": \"string\",   \"levelOfService\": \"string\",   \"attempts\": \"integer\",   \"billing\": \"boolean\",   \"custom_appt_notes\": \"string\",   \"customer_address_line_2\": \"string\",   \"customer_phone_two\": \"string\",   \"account_id\": \"string\",   \"account_name\": \"string\",   \"account_manager_emails\": \"array of strings\",   \"address_type\": \"string\",   \"created_user_id\": \"string\",   \"created_user_name\": \"string\",   \"customer_notes\": \"string\",   \"dependency\": \"boolean\",   \"driver_notes\": \"array of strings\",   \"height\": \"integer\",   \"is_quote_order\": \"boolean\",   \"is_smp_applied\": \"boolean\",   \"length\": \"integer\",   \"location_appointments\": [     {       \"location_id\": \"string\",       \"start_datetime\": \"datetime\",       \"end_datetime\": \"datetime\",       \"slot_name\": \"string\",       \"type_of_order\": \"string\"     }   ],   \"location_partial_match\": \"boolean\",   \"multiday\": \"boolean\",   \"pallets\": \"integer\",   \"quotation_amount\": \"integer\",   \"reference_1_type\": \"string\",   \"reference_2\": \"string\",   \"reference_2_type\": \"string\",   \"reference_3\": \"string\",   \"reference_3_type\": \"string\",   \"surface_area\": \"integer\",   \"total_no_of_cubes\": \"integer\",   \"version\": \"integer\",   \"wh_storage\": \"boolean\",   \"width\": \"integer\",   \"has_recovery\": \"boolean\",   \"has_release\": \"boolean\",   \"is_lh_order\": \"boolean\",   \"lh_order_ids\": \"array of strings\",   \"recovery_status\": \"string\",   \"references\": \"array of strings\",   \"references_list\": \"array of strings\",   \"release_status\": \"string\",   \"release_type\": \"string\",   \"required_accessorials\": \"array of strings\",   \"reason_for_manual_update\": \"array of strings\",   \"source_files\": \"array of strings\",   \"sum_of_items_dim_weight\": \"integer\",   \"sum_of_items_weight\": \"integer\",   \"warehouse_status\": \"string\",   \"order_label\": \"string\" }  Based on the user's plain English request, generate the appropriate MongoDB query using any required operators (comparison, logical, array, aggregation, etc.) include $project in the query if it is required and maintain consistent output without any additional text.  User request: {{ $json.chatInput }}"
+              "message": "=You are a MongoDB query generator that converts natural language requests into MongoDB queries. Your responses should ONLY include the MongoDB query code, with no explanations or additional text.  Reference this database schema: {   \"_id\": \"object\", \"status\": \"string\" (UPPER CASE), \"customer_order_number\": \"string\",  \"customer_address_line\": \"string\",   \"customer_city\": \"string\", \"created_at\": DATE, \"billing_number\": \"string\", \"account_name\": \"string\", \"organization_id\":\"object\" }  Based on the user's plain English request, generate the appropriate MongoDB query using any required operators (comparison, logical, array, aggregation, etc.) include $project in the query if it is required and include count operation within the aggregrate pipeline and maintain consistent output without any additional text. User request: {{ $json.body.query }} and Every query must include filtering by organization_id: {{ $json.body.organization_id }} and query syntax for organization_id should be as: { $eq: [\"$organization_id\", { $toObjectId: {{ $json.body.organization_id }} }] } within $expr\n\nHere are some structured examples:  \n\n1. Find Operation (Basic Retrieval)  \nUser Request: Find all orders where the status is \"DELIVERED\".  \n\ndb.collection.find({ \"status\": \"DELIVERED\" })\n\n\n2. Find with Projection (Selecting Specific Fields)  \nUser Request: Get the customer’s first name, last name, and email for orders where the status is \"PENDING\".  \n\ndb.collection.find(\n  { \"status\": \"PENDING\" },\n  { \"customer_first_name\": 1, \"customer_last_name\": 1, \"customer_email\": 1, \"_id\": 0 }\n)\n\n3. Aggregation - Group and Count  \nUser Request: Get the total number of orders per status.  \n\ndb.collection.aggregate([\n  { \"$group\": { \"_id\": \"$status\", \"total_orders\": { \"$sum\": 1 } } }\n])\n\n\n4. Aggregation - Sum of a Field  \nUser Request: Calculate the total weight of all orders.  \n\ndb.collection.aggregate([\n  { \"$group\": { \"_id\": null, \"total_weight\": { \"$sum\": \"$weight\" } } }\n])\n\n\n5. Aggregation - Filter and Count  \nUser Request: Count the number of orders with \"service_install\" set to true.  \n\ndb.collection.aggregate([\n  { \"$match\": { \"service_install\": true } },\n  { \"$count\": \"total_orders\" }\n])\n\n\n6. Aggregation - Lookup (Join with Another Collection)  \nUser Request: Join order details with customer details from the `customers` collection using `account_id`.  \n\ndb.collection.aggregate([\n  { \"$lookup\": {\n      \"from\": \"customers\",\n      \"localField\": \"account_id\",\n      \"foreignField\": \"account_id\",\n      \"as\": \"customer_details\"\n    }\n  }\n])\n\n\n7. Find with Sorting  \nUser Request: Get the last 5 orders sorted by `created_at` in descending order.  \n\ndb.collection.aggregate([\n  { $sort: { \"created_at\": -1 } },\n  { $limit: 5 }\n])\n\n\n\n8. Find with Regex  \nUser Request: Find all orders where the customer’s first name starts with \"J\".  \n\ndb.collection.find({ \"customer_first_name\": { \"$regex\": \"^J\", \"$options\": \"i\" } })\n\n\n9. Find with Multiple Conditions (AND, OR)  \nUser Request: Find all orders where the status is \"IN_PROGRESS\" or the weight is greater than 50.  \n\ndb.collection.find({\n  \"$or\": [\n    { \"status\": \"IN_PROGRESS\" },\n    { \"weight\": { \"$gt\": 50 } }\n  ]\n})\n\n10. When generating MongoDB queries involving date comparisons, do not use ISODate().\nInstead, always use the following structure using $expr and $dateFromString for date filtering, All date strings must be in DD-MM-YYYY format:\nDate-based logic (must handle dynamically):\nIf the user query includes \"today\", use the {{ $json.today }}.\nIf the query includes \"yesterday\", use  {{ $json.today }} minus one day, in the same format.\n\nConstruct the query so that:\n$gte uses the start of the target date.\n$lt uses the start of the next day.\nExample:\ndb.collection.aggregate([\n  {\n    \"$match\": {\n      \"$expr\": {\n        \"$and\": [\n          {\n            \"$gte\": [\n              \"$created_at\",\n              { \"$dateFromString\": { \"dateString\": \"YYYY-MM-DDT00:00:00Z\" } }\n            ]\n          },\n          {\n            \"$lt\": [\n              \"$created_at\",\n              { \"$dateFromString\": { \"dateString\": \"YYYY-MM-DDT00:00:00Z\" } }\n            ]\n          }\n        ]\n      }\n    }\n  },\n  {\n    \"$count\": \"orders_count\"\n  }\n])\n\nAlways follow this pattern for all date-based filters — regardless of the date or collection. \n\n\n"
             }
           ]
         }
@@ -173,10 +167,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        320,
-        2760
+        -2780,
+        4300
       ],
-      "id": "c22a35a3-340f-411a-875f-3b27af3a0053",
+      "id": "1e5c4f12-3654-4a20-81ff-daef8a6cbaca",
       "name": "Basic LLM Chain"
     },
     {
@@ -190,10 +184,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.1,
       "position": [
-        1260,
-        2760
+        -1840,
+        4300
       ],
-      "id": "b69ab6c2-20f1-4a5b-80f0-a3ddb9134dea",
+      "id": "eeb254ee-cf8e-4b34-b293-85c251737e18",
       "name": "MongoDB2",
       "credentials": {
         "mongoDb": {
@@ -210,10 +204,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        260,
-        3000
+        -2840,
+        4540
       ],
-      "id": "98c9bbcd-feb8-40d8-9f38-51c1bcb0ef3b",
+      "id": "bc55ee27-c219-4078-be64-e47e5757d398",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -276,10 +270,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        640,
-        2760
+        -2460,
+        4300
       ],
-      "id": "1eb3e48d-197e-4b98-998c-f17e0a662841",
+      "id": "bf485922-6327-43b5-aaf4-c4c136a08076",
       "name": "Switch"
     },
     {
@@ -291,10 +285,10 @@
       "type": "n8n-nodes-base.mongoDb",
       "typeVersion": 1.1,
       "position": [
-        1140,
-        3240
+        -1960,
+        4780
       ],
-      "id": "93e30b58-aa1f-4cc9-9c54-e429db6ea632",
+      "id": "b9472266-c12b-4afc-b80d-4d28321c30d3",
       "name": "MongoDB",
       "credentials": {
         "mongoDb": {
@@ -311,20 +305,20 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1520,
-        2760
+        -1580,
+        4300
       ],
-      "id": "db43fb3b-a4fc-4a69-9675-af4ab4d8bc63",
+      "id": "810a7257-da4c-4b94-a947-4c060951f4a5",
       "name": "Aggregate"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "Convert to natural language as a human response to user query",
+        "text": "={{ $json.data }}",
         "messages": {
           "messageValues": [
             {
-              "message": "=Convert this {{ $json.data.toJsonString() }} into a natural, conversational NLP response. Ensure the response feels human-like, engaging, and interactive. Start with: 'Here are the details as per your request:' and then summarize the information in a way that sounds natural, like you're explaining it to a person. Use friendly and clear language, and avoid robotic phrasing."
+              "message": "=Given the retrieved SQL query result: {{ $json.data.toJsonString() }}, format the response in a clear and concise natural language format. Ensure that the response directly reflects the data retrieved without any assumptions or modifications. If multiple records are found, present them in a structured way that is easy to read. If only one record is found, provide a straightforward answer. Maintain a professional yet user-friendly tone to the user query: {{ $json.body.query }}.\n\nExample Outputs\nSingle Record:\nUser Query: \"What is the price of Product X?\"\nSQL Result: { \"Product\": \"Product X\", \"Price\": 25.99 }\nResponse: \"The price of Product X is $25.99.\"\n\nMultiple Records:\nUser Query: \"List all employees in the Marketing department.\"\nSQL Result:\n[\n    { \"Name\": \"Alice Johnson\", \"Position\": \"Marketing Manager\" },\n    { \"Name\": \"Bob Smith\", \"Position\": \"SEO Specialist\" }\n]\nResponse:\nHere are the employees in the Marketing department:\nAlice Johnson (Marketing Manager)\nBob Smith (SEO Specialist)\n\nFor multiple records response, summarize it."
             }
           ]
         }
@@ -332,10 +326,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        1720,
-        2760
+        -660,
+        4040
       ],
-      "id": "7f334d1f-e315-46a1-9ff0-4ee0a87c3479",
+      "id": "04f5863e-7a3d-4651-946a-80199cba58d0",
       "name": "Basic LLM Chain1"
     },
     {
@@ -346,10 +340,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1760,
-        3040
+        -420,
+        4280
       ],
-      "id": "7021fa32-f652-45d3-817a-3e7b82fe61ad",
+      "id": "85c7e2f5-bed3-41f4-b25b-b4447f358389",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
@@ -366,81 +360,42 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1460,
-        3240
+        -1640,
+        4780
       ],
-      "id": "57a92fd2-09e4-49bf-86b5-594d7e7eeaa1",
+      "id": "bfacb19c-7802-40af-a9b5-404451061ee4",
       "name": "Aggregate1"
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "Convert to natural language as a human response to user query",
-        "messages": {
-          "messageValues": [
-            {
-              "message": "=Convert this {{ $json.data.toJsonString() }} into a natural, conversational NLP response. Ensure the response feels human-like, engaging, and interactive. Start with: 'Here are the details as per your request:' and then summarize the information in a way that sounds natural, like you're explaining it to a person. Use friendly and clear language, and avoid robotic phrasing."
-            }
-          ]
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.5,
-      "position": [
-        1700,
-        3240
-      ],
-      "id": "53825742-f78c-4473-99d6-ca7881b05888",
-      "name": "Basic LLM Chain2"
-    },
-    {
-      "parameters": {
-        "modelName": "models/gemini-1.5-flash",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        1700,
-        3460
-      ],
-      "id": "7d9430c6-cd6d-4b5b-bb8e-dbeefbb8f766",
-      "name": "Google Gemini Chat Model2",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "kENcdhBh2a0j4yYG",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "const inputText = $input.first().json.text;\n\n// Improved regex to capture find() and findOne() queries along with optional projection\nconst match = inputText.match(/(?:find|findOne)\\s*\\(\\s*([\\s\\S]*?)\\s*(?:,\\s*([\\s\\S]*?))?\\s*\\)/);\n\nif (match && match[1]) {\n  try {\n    const queryString = match[1].trim();\n    const projectionString = match[2] ? match[2].trim() : \"{}\";\n\n    // Convert MongoDB-style object notation to valid JSON format\n    const sanitizedQuery = queryString.replace(/(\\w+):/g, '\"$1\":');\n    const sanitizedProjection = projectionString.replace(/(\\w+):/g, '\"$1\":');\n\n    // Parse JSON safely\n    const extractedQuery = JSON.parse(sanitizedQuery);\n    const extractedProjection = JSON.parse(sanitizedProjection);\n\n    return [{ query: extractedQuery, projection: extractedProjection }];\n  } catch (error) {\n    return [{ error: `Invalid JSON format in query or projection: ${error.message}` }];\n  }\n} else {\n  return [{ error: \"No valid query found\" }];\n}\n"
+        "jsCode": "const inputText = $input.first().json.text;\n\n// Improved regex to capture find() and findOne() queries along with optional projection\nconst match = inputText.match(/(?:find|findOne)\\s*\\(\\s*([\\s\\S]*?)\\s*(?:,\\s*([\\s\\S]*?))?\\s*\\)/);\n\nif (match && match[1]) {\n  try {\n    const queryString = match[1].trim();\n    const projectionString = match[2] ? match[2].trim() : \"{}\";\n\n    // Convert MongoDB-style object notation to valid JSON format\n    const sanitizedQuery = queryString.replace(/(\\w+):/g, '\"$1\":');\n    const sanitizedProjection = projectionString.replace(/(\\w+):/g, '\"$1\":');\n\n    // Parse JSON safely\n    const extractedQuery = JSON.parse(sanitizedQuery);\n    const extractedProjection = JSON.parse(sanitizedProjection);\n\n    return [{ query: extractedQuery, projection: extractedProjection }];\n  } catch (error) {\n    return [{ error: `Invalid JSON format in query or projection: ${error.message}` }];\n  }\n} else {\n  return [{ error: \"No valid query found\" }];\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        960,
-        2760
+        -2140,
+        4300
       ],
-      "id": "6b753b24-89d2-4b07-acca-1bf7d7acae31",
+      "id": "d01f8c44-e6ce-4deb-b952-9d5f396e49c0",
       "name": "Code2"
     },
     {
       "parameters": {
-        "jsCode": "const inputText = $input.first().json.text;\n\n// Regex to capture the aggregation pipeline inside aggregate([...])\nconst match = inputText.match(/aggregate\\s*\\(\\s*(\\[[\\s\\S]*?\\])\\s*\\)/);\n\nif (match && match[1]) {\n  try {\n    let extractedPipeline = match[1];\n\n    // Convert MongoDB extended JSON (unquoted keys) into valid JSON format\n    extractedPipeline = extractedPipeline\n      .replace(/([{,]\\s*)([$\\w]+)\\s*:/g, '$1\"$2\":'); // Add quotes around keys\n\n    const parsedPipeline = JSON.parse(extractedPipeline);\n    return [{ pipeline: parsedPipeline }];\n  } catch (error) {\n    return [{ error: \"Invalid JSON format in aggregation pipeline\", details: error.message }];\n  }\n} else {\n  return [{ error: \"No valid aggregation pipeline found\" }];\n}\n"
+        "jsCode": "const inputText = $input.first().json.text;\n\n// Extract the aggregation pipeline inside aggregate([...])\nconst match = inputText.match(/\\.aggregate\\s*\\(\\s*(\\[[\\s\\S]*\\])\\s*\\)/);\n\nif (match && match[1]) {\n  try {\n    let extractedPipeline = match[1];\n\n    // Convert ISODate(\"...\") to valid JavaScript Date\n    extractedPipeline = extractedPipeline.replace(/ISODate\\s*\\(\\s*\"(.*?)\"\\s*\\)/g, 'new Date(\"$1\")');\n\n    // Convert MongoDB extended JSON (unquoted keys) into valid JSON format\n    extractedPipeline = extractedPipeline.replace(/([{,]\\s*)([$\\w]+)\\s*:/g, '$1\"$2\":');\n\n    // Parse JSON safely\n    const parsedPipeline = Function('\"use strict\"; return (' + extractedPipeline + ')')();\n\n    return [{ pipeline: parsedPipeline }];\n  } catch (error) {\n    return [{ error: \"Invalid JSON format in aggregation pipeline\", details: error.message }];\n  }\n} else {\n  return [{ error: \"No valid aggregation pipeline found\" }];\n}\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        860,
-        3240
+        -2240,
+        4780
       ],
-      "id": "5d32593b-0725-4604-a652-cae821a66bac",
+      "id": "e070d68f-a1b3-42e1-af9c-62b24059f26d",
       "name": "Code3"
     },
     {
       "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.query }}",
         "messages": {
           "messageValues": [
             {
@@ -452,10 +407,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        -820,
-        2100
+        -3920,
+        3640
       ],
-      "id": "189317ea-6d28-4c9a-a6e1-513599e22026",
+      "id": "dfd3755a-90fb-4e82-8d78-469af378d47c",
       "name": "Basic LLM Chain3"
     },
     {
@@ -466,10 +421,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -740,
-        2380
+        -3840,
+        3920
       ],
-      "id": "b5452723-b35c-4984-9166-d4cd76132922",
+      "id": "c3b4d1b9-fda2-481f-b4f2-87a64ff49017",
       "name": "Google Gemini Chat Model3",
       "credentials": {
         "googlePalmApi": {
@@ -507,10 +462,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -20,
-        2080
+        -3120,
+        3620
       ],
-      "id": "ea0e7482-4bcb-484d-a6b9-edd5a0fd217e",
+      "id": "526cbee1-e8dc-4c54-a2f2-75b20f9e789f",
       "name": "If"
     },
     {
@@ -520,15 +475,138 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        -440,
-        1960
+        -3540,
+        3500
       ],
-      "id": "06dfd4cc-837c-467b-92ac-7478023706f5",
+      "id": "1c23c074-fcc9-4c26-b2e1-1d466d696826",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2660,
+        3840
+      ],
+      "id": "7d7fadcf-6dd3-44ff-95d7-12b03e190db4",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "kENcdhBh2a0j4yYG",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -1160,
+        4300
+      ],
+      "id": "1c80eeec-bc3e-472b-9cae-0f8d2e9eee58",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "45c0c2f4-79ef-4832-bbd8-83b18e2e44e1",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -980,
+        3940
+      ],
+      "id": "1377333c-94cb-455d-ba78-7b276766d0ab",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You need to respond only for the null result queries from database",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=If the database query returns no results or the data is unavailable, respond with a clear and concise message indicating that the requested information fro user request: {{ $json.body.query }} is not found. Do not attempt to generate an answer based on assumptions or unrelated data. Instead, politely inform the user that the data is unavailable and suggest possible next steps if applicable.\n\nExample Response : \"Sorry, but I couldn't find any matching records in the database.\""
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        -760,
+        4480
+      ],
+      "id": "a73b390b-726c-4e5c-a980-5e995c967bdc",
+      "name": "Basic LLM Chain2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        4720
+      ],
+      "id": "938e3ce9-b56e-4019-9281-f6a8f2226bd7",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "kENcdhBh2a0j4yYG",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get input data\nconst inputData = $input.first().json;\n\n// Get today's date\nconst today = new Date();\nconst formattedDate = today.toISOString().split('T')[0];\n\n// Return the combined result\nreturn [\n  {\n    json: {\n      body: inputData.body,\n      today: formattedDate\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3120,
+        4300
+      ],
+      "id": "14896304-2365-42fc-bb2f-99154b10cd90",
+      "name": "Code"
     }
   ],
+  "pinData": {},
   "connections": {
-    "When chat message received": {
+    "Webhook": {
       "main": [
         [
           {
@@ -583,17 +661,6 @@
           {
             "node": "Supabase Vector Store",
             "type": "ai_embedding",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Groq Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Question and Answer Chain1",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -687,9 +754,9 @@
       "main": [
         [
           {
-            "node": "Basic LLM Chain1",
+            "node": "Merge1",
             "type": "main",
-            "index": 0
+            "index": 1
           }
         ]
       ]
@@ -709,20 +776,9 @@
       "main": [
         [
           {
-            "node": "Basic LLM Chain2",
+            "node": "Merge1",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model2": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Basic LLM Chain2",
-            "type": "ai_languageModel",
-            "index": 0
+            "index": 1
           }
         ]
       ]
@@ -782,7 +838,12 @@
         ],
         [
           {
-            "node": "Basic LLM Chain",
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code",
             "type": "main",
             "index": 0
           }
@@ -799,11 +860,83 @@
           }
         ]
       ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Question and Answer Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        []
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "pinData": {},
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "73c9006b-500f-41ed-a058-1be5dcc2a9d8",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "b33deeb8f5e82be212fe7bd72d9cc185c6e5c4a6a4974db6cdae637b2ac7f183"
-  }
+  },
+  "id": "QtevhBg7GkG1J7Zh",
+  "tags": []
 }
